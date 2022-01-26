@@ -27,9 +27,6 @@ var versionCmd = &cobra.Command{
 	Short: "Display version information",
 	Long:  `Display version and detailed build information for tnt2.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if Version == "" {
-			Version = "dev"
-		}
 		fmt.Println("   Version:", Version)
 		fmt.Println("    Branch:", GitBranch)
 		fmt.Println("    Commit:", GitCommit)
@@ -40,7 +37,7 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
-	if BuildDate != "not set" {
+	if GitSummary != "not set" {
 		rootCmd.AddCommand(versionCmd)
 	}
 }
