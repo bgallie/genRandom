@@ -333,10 +333,14 @@ func generateRandomStream() *io.PipeReader {
 
 func aliasNormalizeFunc(f *pflag.FlagSet, name string) pflag.NormalizedName {
 	switch name {
+	case "blocks":
+		name = "blocks=N"
 	case "bs":
 		name = "bs=BYTES"
 	case "count":
 		name = "count=N"
+	case "points":
+		name = "points=N"
 	}
 	return pflag.NormalizedName(name)
 }
