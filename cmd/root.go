@@ -301,7 +301,7 @@ func generateRandomStream() *io.PipeReader {
 	block := make([]byte, blkSize)
 	q, r := new(big.Int).QuoRem(count, big.NewInt(math.MaxInt64), new(big.Int))
 	first, last := int64(0), q.Int64()
-	random := tntengine.NewRand(&tntMachine)
+	random := new(tntengine.Rand).New(&tntMachine)
 
 	go func() {
 		defer output.Close()
