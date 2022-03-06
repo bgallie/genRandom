@@ -6,7 +6,7 @@ require (
 	github.com/bgallie/filters/binary v0.0.0-20211016023717-e8eb8749828a
 	github.com/bgallie/filters/hex v0.0.0-20211016023717-e8eb8749828a
 	github.com/bgallie/filters/lines v0.0.0-20211016023717-e8eb8749828a
-	github.com/bgallie/tntengine v1.3.0
+	github.com/bgallie/tntengine v1.4.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.10.1

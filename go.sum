@@ -82,8 +82,8 @@ github.com/bgallie/filters/lines v0.0.0-20211016023717-e8eb8749828a h1:ZzWcnnuz4
 github.com/bgallie/filters/lines v0.0.0-20211016023717-e8eb8749828a/go.mod h1:0aVGIEtid8RkfurV07aZLepsPyYnbZh4leOGot64qPg=
 github.com/bgallie/jc1 v1.1.1 h1:lRzGB1TddAIcBMZzflASi+Dv10jfacRnIdI79XcLUsI=
 github.com/bgallie/jc1 v1.1.1/go.mod h1:DYi1LTKWFhce4XAKhvyDp6y4cFvRmoXWq0uaCSi59Rc=
-github.com/bgallie/tntengine v1.3.0 h1:xkI6PLBDMiTgvwbAFXWgzAxVL745KzFbfnvM7IoM6Qg=
-github.com/bgallie/tntengine v1.3.0/go.mod h1:kE+/ivo46AYxK0XWTiAA26R2oXmp7Xgb8hDfOV2UnFI=
+github.com/bgallie/tntengine v1.4.0 h1:+luK1T/QeM2DiLL5iS7pyW50u7Bzj+C6R6L1Yvlxgy0=
+github.com/bgallie/tntengine v1.4.0/go.mod h1:kE+/ivo46AYxK0XWTiAA26R2oXmp7Xgb8hDfOV2UnFI=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/census-instrumentation/opencensus-proto v0.3.0 h1:t/LhUZLVitR1Ow2YOnduCsavhwFUklBMoGVYUCqmCqk=

@@ -32,11 +32,11 @@ var dataCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(dataCmd)
-	dataCmd.Flags().StringVarP(&sCnt, "blocks", "", "", `Write N blocks. (default "1")
+	dataCmd.Flags().StringVarP(&sCnt, "blocks", "", "1", `Write N blocks.`)
+	dataCmd.Flags().StringVarP(&sBlock, "bs", "", "512", `Write up to BYTES bytes at a time.
 N and BYTES may be followed by the following multiplicative suffixes: c=1, 
 w=2, b=512, kB=1000, K=1024, MB=1000*1000, M=1024*1024, GB=1000*1000*1000, 
 G=1024*1024*1024, and so on for T, P, E, Z, Y.`)
-	dataCmd.Flags().StringVarP(&sBlock, "bs", "", "512", `Write up to BYTES bytes at a time.`)
 	myFlagSet = dataCmd.Flags()
 	myFlagSet.SetNormalizeFunc(aliasNormalizeFunc)
 }
