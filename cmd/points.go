@@ -54,24 +54,6 @@ of points generated is calculated by multiplying the number of points in the giv
 If geometry is present, it overide the height and width options.`)
 }
 
-// func getOutputFile() *os.File {
-// 	var err error
-// 	var fout *os.File
-
-// 	if len(outputFileName) > 0 {
-// 		if outputFileName == "-" {
-// 			fout = os.Stdout
-// 		} else {
-// 			fout, err = os.Create(outputFileName)
-// 			cobra.CheckErr(err)
-// 		}
-// 	} else {
-// 		fout = os.Stdout
-// 	}
-
-// 	return fout
-// }
-
 func genratePoints(args []string) {
 	var err error
 	initEngine(args)
@@ -109,7 +91,7 @@ func genratePoints(args []string) {
 	}
 
 	fmt.Fprintf(os.Stderr, "Geometry: %dx%d\nCount: %d\n", width, height, pixelCnt)
-	random := tntengine.NewRand(&tntMachine)
+	random := new(tntengine.Rand).New(&tntMachine)
 	fout := getOutputFile()
 	defer fout.Close()
 	for i := 0; i < pixelCnt; i++ {
