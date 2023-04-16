@@ -1,6 +1,6 @@
 module github.com/bgallie/genRandom
 
-go 1.17
+go 1.20
 
 require (
 	github.com/bgallie/filters/binary v0.0.0-20211016023717-e8eb8749828a
