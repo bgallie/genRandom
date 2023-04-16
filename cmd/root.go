@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,12 +19,16 @@ import (
 	"encoding/gob"
 	"fmt"
 	"io"
+	"io/fs"
 	"math"
 	"math/big"
 	"os"
 	"os/user"
+	"path/filepath"
 	"regexp"
+	dbug "runtime/debug"
 	"strings"
+	"time"
 
 	"github.com/bgallie/tntengine"
 	"github.com/spf13/cobra"
@@ -74,6 +78,7 @@ var (
 	GitBranch        string = "not set"
 	GitState         string = "not set"
 	GitSummary       string = "not set"
+	GitDate          string = "not set"
 	BuildDate        string = "not set"
 	Version          string = ""
 )
@@ -116,7 +121,44 @@ Supplying a count will overide the stored count in the .genRand file, allowing f
 psuedo random data by giving the same secret key and starting block number.`)
 	rootCmd.PersistentFlags().StringVarP(&proFormaFileName, "proformafile", "f", "", "the file name containing the proforma machine to use instead of the builtin proforma machine.")
 	rootCmd.PersistentFlags().StringVarP(&outputFileName, "outputFile", "o", "-", "Name of the file containing the generated (psudo)random data.")
-	// rootCmd.MarkPersistentFlagRequired("outputFile")
+
+	// Extract version information from the stored build information.
+	bi, ok := dbug.ReadBuildInfo()
+	if ok {
+		Version = bi.Main.Version
+		rootCmd.Version = Version
+		GitDate = getBuildSettings(bi.Settings, "vcs.time")
+		GitCommit = getBuildSettings(bi.Settings, "vcs.revision")
+		if len(GitCommit) > 1 {
+			GitSummary = fmt.Sprintf("%s-1-%s", Version, GitCommit[0:7])
+		}
+		GitState = "clean"
+		if getBuildSettings(bi.Settings, "vcs.modified") == "true" {
+			GitState = "dirty"
+		}
+	}
+
+	// Get the build date (as the modified date of the executable) if the build date
+	// is not set.
+	if BuildDate == "not set" {
+		fpath, err := os.Executable()
+		cobra.CheckErr(err)
+		fpath, err = filepath.EvalSymlinks(fpath)
+		cobra.CheckErr(err)
+		fsys := os.DirFS(filepath.Dir(fpath))
+		fInfo, err := fs.Stat(fsys, filepath.Base(fpath))
+		cobra.CheckErr(err)
+		BuildDate = fInfo.ModTime().UTC().Format(time.RFC3339)
+	}
+}
+
+func getBuildSettings(settings []dbug.BuildSetting, key string) string {
+	for _, v := range settings {
+		if v.Key == key {
+			return v.Value
+		}
+	}
+	return ""
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -264,9 +306,9 @@ func shutdownTntMachine() {
 }
 
 /*
-	getOutputFiles will return the output file to use while generating the
-	random data.  If an output file names was given, then that file will be
-	opened.  Otherwise stdout is used.
+getOutputFiles will return the output file to use while generating the
+random data.  If an output file names was given, then that file will be
+opened.  Otherwise stdout is used.
 */
 func getOutputFile() *os.File {
 	var err error
