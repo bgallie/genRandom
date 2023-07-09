@@ -241,7 +241,7 @@ func initEngine(args []string) {
 	}
 
 	// Initialize the tntengine with the secret key and the named proforma file.
-	tntMachine.Init([]byte(secret), proFormaFileName)
+	tntMachine.Init([]byte(secret))
 	// Set the engine type and build the cipher machine.
 	tntMachine.SetEngineType("E")
 	tntMachine.BuildCipherMachine()
@@ -300,7 +300,7 @@ func shutdownTntMachine() {
 	cMap[mKey] = tntMachine.Index()
 	checkError(writeCounterFile(cMap))
 
-	var blk tntengine.CypherBlock
+	var blk tntengine.CipherBlock
 	tntMachine.Left() <- blk
 	<-tntMachine.Right()
 }
