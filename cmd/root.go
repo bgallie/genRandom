@@ -125,11 +125,15 @@ psuedo random data by giving the same secret key and starting block number.`)
 	// Extract version information from the stored build information.
 	bi, ok := dbug.ReadBuildInfo()
 	if ok {
-		Version = bi.Main.Version
+		fmt.Println("Version: " + Version)
+		fmt.Println("bi.Main.Version: " + bi.Main.Version)
+		if Version == "" {
+			Version = bi.Main.Version
+		}
 		rootCmd.Version = Version
 		GitDate = getBuildSettings(bi.Settings, "vcs.time")
 		GitCommit = getBuildSettings(bi.Settings, "vcs.revision")
-		if len(GitCommit) > 1 {
+		if len(Version) > 1 {
 			GitSummary = fmt.Sprintf("%s-1-%s", Version, GitCommit[0:7])
 		}
 		GitState = "clean"
