@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ import (
 	"io"
 
 	"github.com/bgallie/filters/binary"
+	"github.com/bgallie/filters/lines"
 	"github.com/spf13/cobra"
 )
 
@@ -45,7 +46,7 @@ G=1024*1024*1024, and so on for T, P, E, Z, Y.`)
 func generateBinaryData(args []string) {
 	// var err error
 	initEngine(args)
-	_, err := io.Copy(getOutputFile(), binary.ToBinary(generateRandomStream()))
+	_, err := io.Copy(getOutputFile(), lines.SplitToLines(binary.ToBinary(generateRandomStream())))
 	checkError(err)
-	shutdownTntMachine()
+	shutdownIkMachine()
 }

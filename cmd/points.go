@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bgallie/tntengine"
+	"github.com/bgallie/ikmachine"
 	"github.com/spf13/cobra"
 )
 
@@ -91,7 +91,7 @@ func genratePoints(args []string) {
 	}
 
 	fmt.Fprintf(os.Stderr, "Geometry: %dx%d\nCount: %d\n", width, height, pixelCnt)
-	random := new(tntengine.Rand).New(&tntMachine)
+	random := new(ikmachine.Rand).New(ikMachine)
 	fout := getOutputFile()
 	defer fout.Close()
 	for i := 0; i < pixelCnt; i++ {
@@ -99,5 +99,5 @@ func genratePoints(args []string) {
 		height := random.Intn(height)
 		fmt.Fprintf(fout, "%d\t%d\n", width, height)
 	}
-	shutdownTntMachine()
+	shutdownIkMachine()
 }

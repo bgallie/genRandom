@@ -30,6 +30,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/bgallie/ikmachine"
 	"github.com/bgallie/tntengine"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -63,7 +64,7 @@ var (
 		"Y":  new(big.Int).Mul(new(big.Int).SetInt64(1024*1024*1024*1024), new(big.Int).SetInt64(1024*1024*1024*1024)),
 	}
 	proFormaFileName string
-	tntMachine       tntengine.TntEngine
+	ikMachine        *ikmachine.IkMachine
 	bCnt             string
 	iCnt             *big.Int
 	sCnt             string
@@ -219,8 +220,8 @@ func initEngine(args []string) {
 	// 3. Arguments from the entered command line (least secure - not recommended)
 	var secret string
 	if len(args) == 0 {
-		if viper.IsSet("TNT2_SECRET") {
-			secret = viper.GetString("TNT2_SECRET")
+		if viper.IsSet("IKM_SECRET") {
+			secret = viper.GetString("IKM_SECRET")
 		} else {
 			if term.IsTerminal(int(os.Stdin.Fd())) {
 				fmt.Fprintf(os.Stderr, "Enter the passphrase: ")
@@ -241,13 +242,10 @@ func initEngine(args []string) {
 	}
 
 	// Initialize the tntengine with the secret key and the named proforma file.
-	tntMachine.Init([]byte(secret))
-	// Set the engine type and build the cipher machine.
-	tntMachine.SetEngineType("E")
-	tntMachine.BuildCipherMachine()
+	ikMachine = new(ikmachine.IkMachine).InitializeProformaEngine().ApplyKey('E', []byte(secret))
 	// Get the starting block count.  cnt can be a number or a fraction such
 	// as "1/2", "2/3", or "3/4".  If it is a fraction, then the starting block
-	// count is calculated by multiplying the maximal states of the tntEngine
+	// count is calculated by multiplying the maximal states of the ikmachine
 	// by the fraction.
 	if bCnt != "" {
 		var good bool
@@ -258,7 +256,7 @@ func initEngine(args []string) {
 				cobra.CheckErr(fmt.Sprintf("Failed converting the count to a big.Int: [%s]\n", bCnt))
 			}
 		} else if len(flds) == 2 {
-			m := new(big.Int).Set(tntMachine.MaximalStates())
+			m := new(big.Int).Set(ikMachine.MaximalStates())
 			a, good := new(big.Int).SetString(flds[0], 10)
 			if !good {
 				cobra.CheckErr(fmt.Sprintf("Failed converting the numerator to a big.Int: [%s]\n", flds[0]))
@@ -279,7 +277,7 @@ func initEngine(args []string) {
 	// the count to use to encode the file.
 	cMap = make(map[string]*big.Int)
 	cMap = readCounterFile(cMap)
-	mKey = tntMachine.CounterKey()
+	mKey = ikMachine.CounterKey()
 	if cMap[mKey] == nil {
 		cMap[mKey] = iCnt
 	} else {
@@ -291,18 +289,15 @@ func initEngine(args []string) {
 	}
 
 	// Now we can set the index of the ciper machine.
-	tntMachine.SetIndex(iCnt)
+	ikMachine.SetIndex(iCnt)
 }
 
 // shutdownTnTMachine will write the current block count to the counter file
 // and shut down the TntMachine (by exiting the go functions in the TntMachine).
-func shutdownTntMachine() {
-	cMap[mKey] = tntMachine.Index()
+func shutdownIkMachine() {
+	cMap[mKey] = ikMachine.GetIndex()
 	checkError(writeCounterFile(cMap))
-
-	var blk tntengine.CipherBlock
-	tntMachine.Left() <- blk
-	<-tntMachine.Right()
+	ikMachine.StopIkMachine()
 }
 
 /*
@@ -328,7 +323,7 @@ func getOutputFile() *os.File {
 	return fout
 }
 
-// generatRandomStream write the (psudo)random data generate by the tntengine to a
+// generatRandomStream write the (psudo)random data generate by the ikmachine to a
 // io.Pipe which can be read from the returned io.PipeReader.  it will generate and
 // write (blockSize X blockCount) (psudo)random bytes.
 func generateRandomStream() *io.PipeReader {
@@ -343,7 +338,7 @@ func generateRandomStream() *io.PipeReader {
 	block := make([]byte, blkSize)
 	q, r := new(big.Int).QuoRem(count, big.NewInt(math.MaxInt64), new(big.Int))
 	first, last := int64(0), q.Int64()
-	random := new(tntengine.Rand).New(&tntMachine)
+	random := new(ikmachine.Rand).New(ikMachine)
 
 	go func() {
 		defer output.Close()
