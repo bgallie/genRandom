@@ -38,7 +38,7 @@ var versionCmd = &cobra.Command{
 			fmt.Println("     Commit:", GitCommit)
 		}
 		fmt.Println("      State:", GitState)
-		if len(GitSummary) > 1 {
+		if GitSummary != "not set" {
 			fmt.Println("    Summary:", GitSummary)
 		}
 		if BuildDate != "not set" {
