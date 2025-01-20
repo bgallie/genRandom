@@ -48,7 +48,5 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
-	if GitSummary != "not set" {
-		rootCmd.AddCommand(versionCmd)
-	}
+	rootCmd.AddCommand(versionCmd)
 }
