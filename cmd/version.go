@@ -33,8 +33,12 @@ var versionCmd = &cobra.Command{
 		fmt.Println("    Version:", Version)
 		if len(GitDate) > 1 {
 			fmt.Println("Commit Date:", GitDate)
+		}
+		if len(GitCommit) > 1 {
 			fmt.Println("     Commit:", GitCommit)
-			fmt.Println("      State:", GitState)
+		}
+		fmt.Println("      State:", GitState)
+		if len(GitSummary) > 1 {
 			fmt.Println("    Summary:", GitSummary)
 		}
 		if BuildDate != "not set" {
