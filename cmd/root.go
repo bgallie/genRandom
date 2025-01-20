@@ -133,6 +133,8 @@ psuedo random data by giving the same secret key and starting block number.`)
 		GitCommit = getBuildSettings(bi.Settings, "vcs.revision")
 		if len(GitCommit) > 1 {
 			GitSummary = fmt.Sprintf("%s-1-%s", Version, GitCommit[0:7])
+		} else {
+			GitSummary = Version
 		}
 		GitState = "clean"
 		if getBuildSettings(bi.Settings, "vcs.modified") == "true" {
