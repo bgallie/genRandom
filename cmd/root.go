@@ -100,14 +100,14 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	if GitSummary != "not set" {
-		idx := strings.Index(GitSummary, "-")
-		Version = GitSummary
-		if idx >= 0 {
-			Version = GitSummary[0:idx]
-		}
-		rootCmd.Version = Version
-	}
+	// if Version == "(devel)" && GitSummary != "not set" {
+	// 	idx := strings.Index(GitSummary, "-")
+	// 	Version = GitSummary
+	// 	if idx >= 0 {
+	// 		Version = GitSummary[0:idx]
+	// 	}
+	// 	rootCmd.Version = Version
+	// }
 	cobra.CheckErr(rootCmd.Execute())
 }
 
@@ -133,8 +133,6 @@ psuedo random data by giving the same secret key and starting block number.`)
 		GitCommit = getBuildSettings(bi.Settings, "vcs.revision")
 		if len(GitCommit) > 1 {
 			GitSummary = fmt.Sprintf("%s-1-%s", Version, GitCommit[0:7])
-		} else {
-			GitSummary = Version
 		}
 		GitState = "clean"
 		if getBuildSettings(bi.Settings, "vcs.modified") == "true" {
