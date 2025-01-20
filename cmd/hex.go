@@ -54,5 +54,5 @@ func generateHexData(args []string) {
 	lines.LineSize = 64
 	_, err := io.Copy(getOutputFile(), lines.SplitToLines(hex.ToHex(generateRandomStream())))
 	checkError(err)
-	ikMachine.StopIkMachine()
+	ikengine.StopIkMachine()
 }

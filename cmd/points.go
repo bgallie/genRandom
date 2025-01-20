@@ -91,7 +91,7 @@ func genratePoints(args []string) {
 	}
 
 	fmt.Fprintf(os.Stderr, "Geometry: %dx%d\nCount: %d\n", width, height, pixelCnt)
-	random := new(ikmachine.Rand).New(ikMachine)
+	random := new(ikmachine.Rand).New(ikengine)
 	fout := getOutputFile()
 	defer fout.Close()
 	for i := 0; i < pixelCnt; i++ {
