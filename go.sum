@@ -4,10 +4,8 @@ github.com/bgallie/filters/hex v0.0.0-20230704004753-167f29af6fad h1:sMVHNjRypk+
 github.com/bgallie/filters/hex v0.0.0-20230704004753-167f29af6fad/go.mod h1:184LcUxCbJAeFIob7o3YdFPfEdRPSW14572Hyz7ieCk=
 github.com/bgallie/filters/lines v0.0.0-20230704004753-167f29af6fad h1:AVAkJshIb/NGeZU2CoHwK9uNR470AeiJx0hKtQ/IAE4=
 github.com/bgallie/filters/lines v0.0.0-20230704004753-167f29af6fad/go.mod h1:yAz6fX/oOilhaMOK4NNh8z0X7sOQZhWNSCo34N8SaOg=
-github.com/bgallie/jc1 v1.2.2 h1:EQtpW96gqzVH8jzXjiwIYUec0QlSwjp6OMOTO1rruoI=
-github.com/bgallie/jc1 v1.2.2/go.mod h1:DYi1LTKWFhce4XAKhvyDp6y4cFvRmoXWq0uaCSi59Rc=
-github.com/bgallie/tntengine v1.7.0 h1:TDm5gdw3MjL/fu1P38o+/eT9ecDiSDpe6wVtZb97CY4=
-github.com/bgallie/tntengine v1.7.0/go.mod h1:v1w3RpdibNRmyn+Zz6yYAafmAG3LPzt29fAyPZKDbAs=
+github.com/bgallie/ikmachine v0.1.0 h1:+d6FvO7pLlGlnTVLWLroBjWe+6sTWJBgLf6EolY08pA=
+github.com/bgallie/ikmachine v0.1.0/go.mod h1:kX/4+l8JtdPQLXWnACDZRs6V6DUWdx8uALmOmVn8XF4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=

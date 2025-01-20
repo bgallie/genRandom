@@ -2,12 +2,11 @@ module github.com/bgallie/genRandom
 
 go 1.23.5
 
-toolchain go1.23.5
-
 require (
 	github.com/bgallie/filters/binary v0.0.0-20230704004753-167f29af6fad
 	github.com/bgallie/filters/hex v0.0.0-20230704004753-167f29af6fad
 	github.com/bgallie/filters/lines v0.0.0-20230704004753-167f29af6fad
+	github.com/bgallie/ikmachine v0.1.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
@@ -15,7 +14,6 @@ require (
 )
 
 require (
-	github.com/bgallie/jc1 v1.2.2 // indirect
 	github.com/friendsofgo/errors v0.9.2 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
