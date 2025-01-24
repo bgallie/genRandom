@@ -34,3 +34,8 @@ require (
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+retract (
+	v1.1.4			 // Contains the retractions.
+	[v1.1.0, v1.1.3] // Bad releases with broken version command.
+)
