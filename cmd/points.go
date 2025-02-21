@@ -99,5 +99,7 @@ func genratePoints(args []string) {
 		height := random.Intn(height)
 		fmt.Fprintf(fout, "%d\t%d\n", width, height)
 	}
+	cMap[ikengine.CounterKey()] = ikengine.GetIndex()
+	writeCounterFile(cMap)
 	shutdownIkMachine()
 }
