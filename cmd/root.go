@@ -98,6 +98,7 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	shutdownEngine = func() {}
 	cobra.CheckErr(rootCmd.Execute())
 	shutdownEngine()
 }
@@ -316,12 +317,12 @@ func setupJC1(key string) error {
 
 func setupUberJC1(key string) error {
 	uberJC1Key = new(jc1.UberJc1).New([]byte(key))
-	random := new(jc1.Rand).New(jc1Key)
+	random := new(jc1.Rand).New(uberJC1Key)
 	myRead = random.Read
 	myIntn = random.Intn
 	shutdownEngine = func() {
 		random.StopRand()
-		jc1Key = nil
+		uberJC1Key = nil
 	}
 	return nil
 }
