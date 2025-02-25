@@ -36,8 +36,8 @@ func init() {
 	rootCmd.AddCommand(binaryCmd)
 	binaryCmd.Flags().StringVarP(&sCnt, "blocks", "", "1", `Write N blocks.`)
 	binaryCmd.Flags().StringVarP(&sBlock, "bs", "", "512", `Write up to BYTES bytes at a time.
-N and BYTES may be followed by the following multiplicative suffixes: c=1, 
-w=2, b=512, K=1000, KB=1024, M=1000*1000, MB=1024*1024, G=1000*1000*1000, 
+N and BYTES may be followed by the following multiplicative suffixes: c=1,
+w=2, b=512, K=1000, KB=1024, M=1000*1000, MB=1024*1024, G=1000*1000*1000,
 GB=1024*1024*1024, and so on for T, P, E, Z, Y.`)
 	myFlagSet = binaryCmd.Flags()
 	myFlagSet.SetNormalizeFunc(aliasNormalizeFunc)
@@ -46,7 +46,8 @@ GB=1024*1024*1024, and so on for T, P, E, Z, Y.`)
 func generateBinaryData(args []string) {
 	// var err error
 	initEngine(args)
-	_, err := io.Copy(getOutputFile(), lines.SplitToLines(binary.ToBinary(generateRandomStream())))
+	out, err := getOutputFile()
+	cobra.CheckErr(err)
+	_, err = io.Copy(out, lines.SplitToLines(binary.ToBinary(generateRandomStream())))
 	checkError(err)
-	shutdownIkMachine()
 }

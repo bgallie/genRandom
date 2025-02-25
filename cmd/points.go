@@ -22,7 +22,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bgallie/ikmachine"
 	"github.com/spf13/cobra"
 )
 
@@ -46,12 +45,13 @@ var pointsCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(pointsCmd)
 	pointsCmd.Flags().StringVarP(&pCnt, "points", "n", "", `Count of points to generate.
-The points can be a number or a fraction such as "1/2", "2/3", or "3/4".  If it is a fraction, then the number
-of points generated is calculated by multiplying the number of points in the given rectangle by the fraction.`)
+The points can be a number or a fraction such as "1/2", "2/3", or "3/4".  If it
+is a fraction, then the number of points generated is calculated by multiplying
+the number of points in the given rectangle by the fraction.`)
 	pointsCmd.Flags().IntVarP(&height, "height", "y", 480, "Height of the rectangle in which to generate points.")
 	pointsCmd.Flags().IntVarP(&width, "width", "x", 640, "Width of the rectangle in which to generate points.")
-	pointsCmd.Flags().StringVarP(&geometry, "geometry", "g", "", `The geometry of the rectangle in which to generate points expressed as WxH (eg. 640x480).
-If geometry is present, it overide the height and width options.`)
+	pointsCmd.Flags().StringVarP(&geometry, "geometry", "g", "", `The geometry of the rectangle in which to generate points expressed as WxH
+(eg. 640x480). If geometry is present, it overide the height and width options.`)
 }
 
 func genratePoints(args []string) {
@@ -91,15 +91,12 @@ func genratePoints(args []string) {
 	}
 
 	fmt.Fprintf(os.Stderr, "Geometry: %dx%d\nCount: %d\n", width, height, pixelCnt)
-	random := new(ikmachine.Rand).New(ikengine)
-	fout := getOutputFile()
+	fout, err := getOutputFile()
+	cobra.CheckErr(err)
 	defer fout.Close()
 	for i := 0; i < pixelCnt; i++ {
-		width := random.Intn(width)
-		height := random.Intn(height)
+		width := myIntn(width)
+		height := myIntn(height)
 		fmt.Fprintf(fout, "%d\t%d\n", width, height)
 	}
-	cMap[ikengine.CounterKey()] = ikengine.GetIndex()
-	writeCounterFile(cMap)
-	shutdownIkMachine()
 }
