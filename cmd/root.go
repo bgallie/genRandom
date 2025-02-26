@@ -224,8 +224,8 @@ func initEngine(args []string) {
 	// 3. Arguments from the entered command line (least secure - not recommended)
 	var secret string
 	if len(args) == 0 {
-		if viper.IsSet("IKM_SECRET") {
-			secret = viper.GetString("IKM_SECRET")
+		if viper.IsSet("GRD_SECRET") {
+			secret = viper.GetString("GRD_SECRET")
 		} else {
 			if term.IsTerminal(int(os.Stdin.Fd())) {
 				fmt.Fprintf(os.Stderr, "Enter the passphrase: ")
