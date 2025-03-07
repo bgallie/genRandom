@@ -1,4 +1,4 @@
-module github.com/bgallie/genRandom/V2
+module github.com/bgallie/genRandom/v2
 
 go 1.24.0
 
