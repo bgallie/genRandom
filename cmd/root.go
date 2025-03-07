@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"github.com/bgallie/ikmachine"
-	"github.com/bgallie/jc1"
+	"github.com/bgallie/jc1/v2"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"golang.org/x/term"
@@ -89,9 +89,10 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "genRandom",
 	Short: "Generate (psudo)random data using various psuedo random number generators",
-	Long: `Generate (psudo)random data using various random number generator as either
-	a stream of random bytes, a stream of ASCII '0' and '1' characters, a stream of hexidecimal encoded bytes,
-	or a series of X,Y coordinatges within a rectangle of a given size.`,
+	Long: `	Generate (psudo)random data using various random number generator as either
+	a stream of random bytes, a stream of ASCII '0' and '1' characters,
+	a stream of hexidecimal encoded bytes, or a series of X,Y coordinatges 
+	within a rectangle of a given size.`,
 	Version: Version,
 }
 

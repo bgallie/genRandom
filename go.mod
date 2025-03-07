@@ -7,7 +7,7 @@ require (
 	github.com/bgallie/filters/hex v0.0.0-20250215144818-de32942db439
 	github.com/bgallie/filters/lines v0.0.0-20250215144818-de32942db439
 	github.com/bgallie/ikmachine v0.2.0
-	github.com/bgallie/jc1 v1.2.2
+	github.com/bgallie/jc1/v2 v2.0.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.19.0

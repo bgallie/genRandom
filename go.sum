@@ -6,8 +6,8 @@ github.com/bgallie/filters/lines v0.0.0-20250215144818-de32942db439 h1:CvxX9NW1e
 github.com/bgallie/filters/lines v0.0.0-20250215144818-de32942db439/go.mod h1:izOitetx7IDSA7nJOvPnNhxsBtn3vNMgaxri/Ppeva4=
 github.com/bgallie/ikmachine v0.2.0 h1:394g+MVdcZEEmK4/WMss43529YDBNSLGPNaO0yXVl3A=
 github.com/bgallie/ikmachine v0.2.0/go.mod h1:P/RyrWX6wcEZtJF1Di+FLhqPXfch3PzYhDYnsNo2seQ=
-github.com/bgallie/jc1 v1.2.2 h1:EQtpW96gqzVH8jzXjiwIYUec0QlSwjp6OMOTO1rruoI=
-github.com/bgallie/jc1 v1.2.2/go.mod h1:DYi1LTKWFhce4XAKhvyDp6y4cFvRmoXWq0uaCSi59Rc=
+github.com/bgallie/jc1/v2 v2.0.0 h1:uDk3vbKhmabaVrLh2k5gRqhWh+CAJgMwGk2ItwBTeBw=
+github.com/bgallie/jc1/v2 v2.0.0/go.mod h1:eQYse9zz8hhd0mUopvPKv9L9/S2vJ9m1Q8KZGZVjTtg=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
