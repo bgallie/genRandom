@@ -261,8 +261,10 @@ func setupIkMachine(secret string) error {
 	myIntn = random.Intn
 	shutdownEngine = func() {
 		random.StopRand()
+		random = nil
 		cobra.CheckErr(writeCounterToConfig(ikengine.CounterKey(), ikengine.GetIndex()))
 		ikengine.StopIkMachine()
+		ikengine = nil
 	}
 
 	// Get the starting block count.  cnt can be a number or a fraction such
@@ -310,6 +312,7 @@ func setupJC1(key string) error {
 	myIntn = random.Intn
 	shutdownEngine = func() {
 		random.StopRand()
+		random = nil
 		jc1Key = nil
 	}
 	return nil
@@ -322,6 +325,7 @@ func setupUberJC1(key string) error {
 	myIntn = random.Intn
 	shutdownEngine = func() {
 		random.StopRand()
+		random = nil
 		uberJC1Key = nil
 	}
 	return nil

@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/bgallie/genRandom/v2/cmd"
+import "github.com/bgallie/genRandom/V2/cmd"
 
 func main() {
 	cmd.Execute()
