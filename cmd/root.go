@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"encoding/base64"
 	"fmt"
 	"io"
 	"io/fs"
@@ -27,7 +28,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bgallie/ikmachine"
+	"github.com/bgallie/ikmachine/v2"
 	"github.com/bgallie/jc1/v2"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -73,7 +74,7 @@ var (
 	sBlock         string
 	blockCount     *big.Int
 	blockSize      *big.Int
-	CounterKey     string
+	counterKey     string
 	mKey           string
 	outputFileName string
 	GitCommit      string = "not set"
@@ -257,13 +258,20 @@ func initEngine(args []string) {
 func setupIkMachine(secret string) error {
 	// Initialize the ikmachine with the secret key and the named proforma file.
 	ikengine = new(ikmachine.IkMachine).InitializeProformaEngine().ApplyKey('E', []byte(secret))
+	// Get the counter key by seting the index to zero (0), encrypting an
+	// cipherblock of all zeros, enncoding the results in base64.
+	savedIndex := ikengine.Index() // save the current index.
+	ikengine.Index(ikmachine.BigZero)
+	ikengine.Input <- make(ikmachine.CipherBlock, ikmachine.CipherBlockBytes)
+	counterKey = base64.RawStdEncoding.EncodeToString(<-ikengine.Output)
+	ikengine.Index(savedIndex) // restore the saved index.
 	random := new(ikmachine.Rand).New(ikengine)
 	myRead = random.Read
 	myIntn = random.Intn
 	shutdownEngine = func() {
 		random.StopRand()
 		random = nil
-		cobra.CheckErr(writeCounterToConfig(ikengine.CounterKey(), ikengine.GetIndex()))
+		cobra.CheckErr(writeCounterToConfig(counterKey, ikengine.Index()))
 		ikengine.StopIkMachine()
 		ikengine = nil
 	}
@@ -297,12 +305,12 @@ func setupIkMachine(secret string) error {
 	} else {
 		// Read the saved counter from the config file.
 		var err error = nil
-		iCnt, err = readCounterFromConfig(ikengine.CounterKey(), ikmachine.BigZero)
+		iCnt, err = readCounterFromConfig(counterKey, ikmachine.BigZero)
 		cobra.CheckErr(err)
 	}
 
 	// Now we can set the index of the ciper machine.
-	ikengine.SetIndex(iCnt)
+	ikengine.Index(iCnt)
 	return nil
 }
 
