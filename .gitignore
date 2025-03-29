@@ -1,3 +1,5 @@
 genRandom*
 .vscode/*
 assets
+*.out
+
