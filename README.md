@@ -38,9 +38,9 @@ COMMAND | DESCRIPTION
                             secret key and starting block number.
   -h, --help                help for genRandom
   -o, --outputFile string   Name of the file containing the generated pseudo-random data. (default "-")
-  -s, --source string       the source of the random data.  The sources available are:
+  -s, --source string       the source of the random data (default "ikmachine/V2").  The sources available are:
                             	1. ikmachine - an infinite key (with respact to the plaintext) encryption
-                            	               machine.
+                            	               machine V1.
                             	2. jc1       - a Go implementation of the JC1 pseudo random byte 
                             	               generator by John C. Craig.
                             	3. uberjc1   - a stack of 4 JC1 generators connected in series.

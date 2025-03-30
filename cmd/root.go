@@ -250,7 +250,11 @@ func initEngine(args []string) {
 		cobra.CheckErr(setupJC1(secret))
 	case "uberjc1":
 		cobra.CheckErr(setupUberJC1(secret))
+	case "ikmachine":
+		ikmachine.Mode = ikmachine.V1
+		cobra.CheckErr(setupIkMachine(secret))
 	default:
+		// using ikmachine/v2
 		cobra.CheckErr(setupIkMachine(secret))
 	}
 }
