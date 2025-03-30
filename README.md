@@ -13,7 +13,9 @@ The generated output can be one of the following formats:
 - a series of X,Y coordinatges within a rectangle of a given size.
 
 ## Usage:
->```genRandom [command]```
+```bash
+  genRandom [command]```
+```
 
 ## Available Commands:
 COMMAND | DESCRIPTION 
