@@ -97,8 +97,9 @@ var rootCmd = &cobra.Command{
 	Version: Version,
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
+// Execute adds all child commands to the root command and sets flags
+// appropriately.  This is called by main.main(). It only needs to happen once
+// vc xto the rootCmd.
 func Execute() {
 	shutdownEngine = func() {}
 	cobra.CheckErr(rootCmd.Execute())
@@ -142,8 +143,8 @@ secret key and starting block number.`)
 		}
 	}
 
-	// Get the build date (as the modified date of the executable) if the build date
-	// is not set.
+	// Get the build date (as the modified date of the executable) if the build
+	// date is not set.
 	if BuildDate == "not set" {
 		fpath, err := os.Executable()
 		cobra.CheckErr(err)
@@ -181,8 +182,10 @@ func initConfig() {
 		viper.SetConfigName("config")
 		viper.SetConfigType("ini")
 	}
-	viper.AutomaticEnv()                        // read in environment variables that match
-	cobra.CheckErr(os.MkdirAll(confPath, 0750)) // ensure confPath exists
+	// read in environment variables that match
+	viper.AutomaticEnv()
+	// ensure confPath exists
+	cobra.CheckErr(os.MkdirAll(confPath, 0750))
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err != nil {
 		// there was an error reading the config file.  If it did not exist,
@@ -197,7 +200,7 @@ func initConfig() {
 	}
 }
 
-// ParseNumber parses a numeric string with an optional multiplier into a number.
+// ParseNumber parses a numeric string with an optional multiplier to a number.
 func ParseNumber(num string) *big.Int {
 	val := new(big.Int)
 	re := regexp.MustCompile(`([[:digit:]]+)([[:alpha:]]*)`)
@@ -223,7 +226,7 @@ func initEngine(args []string) {
 	// Obtain the passphrase used to encrypt the file from either:
 	// 1. User input from the terminal (most secure)
 	// 2. The 'TNT2_SECRET' environment variable (less secure)
-	// 3. Arguments from the entered command line (least secure - not recommended)
+	// 3. Arguments from the entered command line (not recommended)
 	var secret string
 	if len(args) == 0 {
 		if viper.IsSet("GRD_SECRET") {
@@ -242,7 +245,7 @@ func initEngine(args []string) {
 	}
 
 	if len(secret) == 0 {
-		cobra.CheckErr("You must supply a password.")
+		cobra.CheckErr("you must supply a password")
 	}
 
 	switch source {
@@ -366,9 +369,9 @@ func getOutputFile() (*os.File, error) {
 	return fout, err
 }
 
-// generatRandomStream write the (psudo)random data generate by the ikengine to a
-// io.Pipe which can be read from the returned io.PipeReader.  it will generate and
-// write (blockSize X blockCount) (psudo)random bytes.
+// generateRandomStream writes the (psudo-)random data generate by the source
+// to an io.Pipe which can be read from the returned io.PipeReader.  it will
+// generate and write (blockSize X blockCount) (pseudo-)random bytes.
 func generateRandomStream() *io.PipeReader {
 	blockCount = ParseNumber(sCnt)
 	blockSize = ParseNumber(sBlock)
