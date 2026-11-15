@@ -1,36 +1,36 @@
 # Name
 
-**genRandom** - generate psudo-random data using the tnt2engine random number generator.
+**genRandom** - generate pseudo-random data using the tnt2engine random number generator.
 
 ## Description
 
-**genRandom** generates a stream of psudo-random data using the *tnt2engine* psudo-randmon number generator.  The data can be output as:
+**genRandom** generates a stream of pseudo-random data using the *tnt2engine* pseudo-random number generator.  The data can be output as:
 
 - a stream of ASCII '0' and '1' characters.
 - a stream of bytes.
 - a stream of hexadecimal encoded bytes.
-- a series of tab seperated XY coordinates in a rectangle of a given size.
+- a series of tab separated XY coordinates in a rectangle of a given size.
 
-## Usage:
+## Usage
 
         genRandom [command]
 
-### Available Commands:
+### Available Commands
 
-      binary      Generate a stream of (psudo)random ASCII '0' and '1' characters.
+      binary      Generate a stream of (pseudo)random ASCII '0' and '1' characters.
       completion  Generate the autocompletion script for the specified shell
-      data        Generate a stream of (psudo)random bytes.
+      data        Generate a stream of (pseudo)random bytes.
       help        Help about any command
-      hex         Generate a stream of (psudo)random hexadecimal encoded bytes.
-      points      Generate a series of (psudo)random X,Y coordinates in a rectanglee of a given size
+      hex         Generate a stream of (pseudo)random hexadecimal encoded bytes.
+      points      Generate a series of (pseudo)random X,Y coordinates in a rectangle of a given size
       version     Display version information
 
-### Flags:
+### Flags
 
           --config string         config file (default is $HOME/.tnt2.yaml)
           --count=N string        starting block count.
       -h, --help                  help for genRandom
-      -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+      -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
       -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
       -v, --version               version for genRandom
 
@@ -40,7 +40,7 @@ Use "genRandom [command] --help" for more information about a command.
 
 ### binary
 
-Generate a stream of (psudo)random ASCII '0' and '1' characters.
+Generate a stream of (pseudo)random ASCII '0' and '1' characters.
 
 #### Usage
 
@@ -56,7 +56,7 @@ Generate a stream of (psudo)random ASCII '0' and '1' characters.
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
 
 ### completion
@@ -83,14 +83,14 @@ Generate a stream of (psudo)random ASCII '0' and '1' characters.
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
 
 Use "genRandom completion [command] --help" for more information about a command.
 
 ### data
 
-        Generate a stream of (psudo)random bytes.
+        Generate a stream of (pseudo)random bytes.
 
 #### Usage
 
@@ -109,7 +109,7 @@ Use "genRandom completion [command] --help" for more information about a command
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
 
 ### Help
@@ -129,12 +129,12 @@ Use "genRandom completion [command] --help" for more information about a command
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
 
 ### hex
 
-        Generate a stream of (psudo)random hexadecimal encoded bytes.
+        Generate a stream of (pseudo)random hexadecimal encoded bytes.
 
 #### Usage
 
@@ -153,12 +153,12 @@ Use "genRandom completion [command] --help" for more information about a command
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
 
 ### points
 
-        Generate a series of (psudo)random X,Y coordinates in a rectanglee of a given size
+        Generate a series of (pseudo)random X,Y coordinates in a rectangle of a given size
 
 #### Usage
 
@@ -167,7 +167,7 @@ Use "genRandom completion [command] --help" for more information about a command
 #### Flags
 
         -g, --geometry string   The geometry of the rectangle in which to generate points expressed as WxH (eg. 640x480).
-                                If geometry is present, it overide the height and width options.
+                                If geometry is present, it override the height and width options.
         -y, --height int        Height of the rectangle in which to generate points. (default 480)
         -h, --help              help for points
         -n, --points=N string   Count of points to generate.
@@ -177,7 +177,7 @@ Use "genRandom completion [command] --help" for more information about a command
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
 
 ### help
@@ -196,12 +196,12 @@ Use "genRandom completion [command] --help" for more information about a command
 
             --config string         config file (default is $HOME/.tnt2.yaml)
             --count=N string        starting block count.
-        -o, --outputFile string     Name of the file containing the generated (psudo)random data. (default "-")
+        -o, --outputFile string     Name of the file containing the generated (pseudo)random data. (default "-")
         -f, --proformafile string   the file name containing the proforma machine to use instead of the builtin proforma machine.
-
 ---
+
 ## Notes
 
 > N and BYTES may be followed by the following multiplicative suffixes: c=1, w=2, b=512, kB=1000, K=1024, MB=1000\*1000, M=1024\*1024, GB=1000\*1000\*1000, G=1024\*1024\*1024, and so on for T, P, E, Z, Y.
-
-> The count can be a number (possibly followed by a multiplicative suffixes) or a fraction such as "1/2", "2/3", or "3/4".  If it is a fraction, then the starting block count is calculated by multiplying the maximal blocks generated by the tntEngine by the fraction.  Supplying a count will overide the stored count in the .genRand file, allowing for a repeatable stream of psuedo random data by giving the same secret key and starting block number.
+>
+> The count can be a number (possibly followed by a multiplicative suffixes) or a fraction such as "1/2", "2/3", or "3/4".  If it is a fraction, then the starting block count is calculated by multiplying the maximal blocks generated by the tntEngine by the fraction.  Supplying a count will override the stored count in the ```.genRand``` file, allowing for a repeatable stream of pseudo-random data by giving the same secret key and starting block number.
