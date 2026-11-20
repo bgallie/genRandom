@@ -1,0 +1,18 @@
+separator = '^&^'
+
+[editor]
+[editor.linux-amd64]
+command = 'gnome-terminal^&^--show-menubar^&^--maximize^&^--^&^{{.Editor}}^&^{{.ConfigFile}}'
+editor = 'nano'
+
+[editor.linux-arm64]
+command = 'gnome-terminal^&^--show-menubar^&^--maximize^&^--^&^{{.Editor}}^&^{{.ConfigFile}}'
+editor = 'nano'
+
+[editor.windows-386]
+command = '{{.Editor}}^&^{{.ConfigFile}}'
+editor = 'notepad.exe'
+
+[editor.windows-amd64]
+command = '{{.Editor}}^&^{{.ConfigFile}}'
+editor = 'notepad.exe'

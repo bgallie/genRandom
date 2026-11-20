@@ -30,7 +30,11 @@ var versionCmd = &cobra.Command{
 		if Version == "" {
 			Version = "(devel)"
 		}
-		fmt.Println("    Version:", Version)
+		if len(osCpuType) > 1 {
+			fmt.Printf("     Version: %s for %s\n", Version, osCpuType)
+		} else {
+			fmt.Println("    Version:", Version)
+		}
 		if len(GitDate) > 1 {
 			fmt.Println("Commit Date:", GitDate)
 		}
