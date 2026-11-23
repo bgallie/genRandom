@@ -26,7 +26,7 @@ import (
 // binaryCmd represents the binary command
 var binaryCmd = &cobra.Command{
 	Use:   "binary",
-	Short: "Generate a stream of (psudo)random ASCII '0' and '1' characters.",
+	Short: "Generate a stream of (pseudo-)random ASCII '0' and '1' characters.",
 	Run: func(cmd *cobra.Command, args []string) {
 		generateBinaryData(args)
 	},

@@ -1,6 +1,6 @@
+[editor]
 separator = '^&^'
 
-[editor]
 [editor.linux-amd64]
 command = 'gnome-terminal^&^--show-menubar^&^--maximize^&^--^&^{{.Editor}}^&^{{.ConfigFile}}'
 editor = 'nano'

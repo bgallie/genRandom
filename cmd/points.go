@@ -36,9 +36,9 @@ var (
 // pointsCmd represents the points command
 var pointsCmd = &cobra.Command{
 	Use:   "points",
-	Short: "Generate a series of (psudo)random X,Y coordinates in a rectanglee of a given size",
+	Short: "Generate a series of (pseudo-)random X,Y coordinates in a rectangle of a given size",
 	Run: func(cmd *cobra.Command, args []string) {
-		genratePoints(args)
+		generatePoints(args)
 	},
 }
 
@@ -51,10 +51,10 @@ the number of points in the given rectangle by the fraction.`)
 	pointsCmd.Flags().IntVarP(&height, "height", "y", 480, "Height of the rectangle in which to generate points.")
 	pointsCmd.Flags().IntVarP(&width, "width", "x", 640, "Width of the rectangle in which to generate points.")
 	pointsCmd.Flags().StringVarP(&geometry, "geometry", "g", "", `The geometry of the rectangle in which to generate points expressed as WxH
-(eg. 640x480). If geometry is present, it overide the height and width options.`)
+(eg. 640x480). If geometry is present, it override the height and width options.`)
 }
 
-func genratePoints(args []string) {
+func generatePoints(args []string) {
 	var err error
 	initEngine(args)
 	if len(geometry) > 0 {
@@ -95,8 +95,8 @@ func genratePoints(args []string) {
 	cobra.CheckErr(err)
 	defer fout.Close()
 	for i := 0; i < pixelCnt; i++ {
-		width := myIntn(width)
-		height := myIntn(height)
+		width := rInt(int64(width))
+		height := rInt(int64(height))
 		fmt.Fprintf(fout, "%d\t%d\n", width, height)
 	}
 }

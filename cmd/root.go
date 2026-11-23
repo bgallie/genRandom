@@ -18,7 +18,6 @@ package cmd
 import (
 	"bytes"
 	_ "embed"
-	"encoding/base64"
 	"fmt"
 	"io"
 	"io/fs"
@@ -31,10 +30,8 @@ import (
 	"time"
 
 	"github.com/bgallie/ikmachine/v2"
-	"github.com/bgallie/jc1/v2"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"golang.org/x/term"
 
 	"github.com/spf13/viper"
 )
@@ -65,14 +62,8 @@ var (
 	}
 	cfgFile        string
 	source         string
-	myRead         func([]byte) (int, error)
-	myIntn         func(int) int
-	ikengine       *ikmachine.IkMachine
-	jc1Key         *jc1.Cipher
-	uberJC1Key     *jc1.UberJc1
 	shutdownEngine func()
 	bCnt           string
-	iCnt           *big.Int
 	sCnt           string
 	sBlock         string
 	blockCount     *big.Int
@@ -129,7 +120,10 @@ secret key and starting block number.`)
 	               machine.
 	2. jc1       - a Go implementation of the JC1 pseudo random byte 
 	               generator by John C. Craig.
-	3. uberjc1   - a stack of 4 JC1 generators connected in series.`)
+	3. uberjc1   - a stack of 4 JC1 generators connected in series.
+	4. crypto    - the Go crypto/rand package.  This is not a pseudo random number
+	               generator, but a true random number generator.  It is slower
+	               than the other sources, but it is more secure.`)
 	rootCmd.PersistentFlags().StringVarP(&outputFileName, "outputFile", "o", "-", `Name of the file containing the generated pseudo-random data.`)
 
 	// Extract version information from the stored build information.
@@ -207,11 +201,10 @@ func initConfig() {
 		confPath = filepath.Join(confPath, "genRandom")
 		checkForConfigIni(confPath)
 		grViper.AddConfigPath(confPath)
-		grViper.AddConfigPath(confPath)
 		grViper.SetConfigName("config")
 		grViper.SetConfigType("toml")
 	}
-	grViper.SetEnvPrefix("igo")
+	grViper.SetEnvPrefix("gr")
 	grViper.SetEnvKeyReplacer(strings.NewReplacer("DEFAULT.", ""))
 	// read in environment variables that match
 	grViper.AutomaticEnv()
@@ -257,128 +250,27 @@ func ParseNumber(num string) *big.Int {
 }
 
 func initEngine(args []string) {
-	// Obtain the passphrase used to encrypt the file from either:
-	// 1. User input from the terminal (most secure)
-	// 2. The 'TNT2_SECRET' environment variable (less secure)
-	// 3. Arguments from the entered command line (not recommended)
-	var secret string
-	if len(args) == 0 {
-		if grViper.IsSet("GRD_SECRET") {
-			secret = grViper.GetString("GRD_SECRET")
-		} else {
-			if term.IsTerminal(int(os.Stdin.Fd())) {
-				fmt.Fprintf(os.Stderr, "Enter the passphrase: ")
-				byteSecret, err := term.ReadPassword(int(os.Stdin.Fd()))
-				cobra.CheckErr(err)
-				fmt.Fprintln(os.Stderr, "")
-				secret = string(byteSecret)
-			}
-		}
-	} else {
-		secret = strings.Join(args, " ")
-	}
-
-	if len(secret) == 0 {
-		cobra.CheckErr("you must supply a password")
-	}
-
+	// Initialize the random number generator engine based on the source specified.
 	switch source {
 	case "jc1":
-		cobra.CheckErr(setupJC1(secret))
+		// setup the jc1 with the secret key.
+		jc1Random(args)
 	case "uberjc1":
-		cobra.CheckErr(setupUberJC1(secret))
+		// setup the uberjc1 with the secret key.
+		uberjc1Random(args)
 	case "ikmachine":
-		ikmachine.Mode = ikmachine.V1
-		cobra.CheckErr(setupIkMachine(secret))
-	default:
-		// using ikmachine/v2
-		cobra.CheckErr(setupIkMachine(secret))
-	}
-}
-
-func setupIkMachine(secret string) error {
-	// Initialize the ikmachine with the secret key and the named proforma file.
-	ikengine = new(ikmachine.IkMachine).InitializeProformaEngine().ApplyKey('E', []byte(secret))
-	// Get the counter key by setting the index to zero (0), encrypting an
-	// cipherblock of all zeros, encoding the results in base64.
-	savedIndex := ikengine.Index() // save the current index.
-	ikengine.Index(ikmachine.BigZero)
-	ikengine.Input <- make(ikmachine.CipherBlock, ikmachine.CipherBlockBytes)
-	counterKey = base64.RawStdEncoding.EncodeToString(<-ikengine.Output)
-	ikengine.Index(savedIndex) // restore the saved index.
-	random := new(ikmachine.Rand).New(ikengine)
-	myRead = random.Read
-	myIntn = random.Intn
-	shutdownEngine = func() {
-		random.StopRand()
-		random = nil
-		cobra.CheckErr(writeCounterToConfig(counterKey, ikengine.Index()))
-		ikengine.StopIkMachine()
-		ikengine = nil
-	}
-
-	// Get the starting block count.  cnt can be a number or a fraction such
-	// as "1/2", "2/3", or "3/4".  If it is a fraction, then the starting block
-	// count is calculated by multiplying the maximal states of the ikengine
-	// by the fraction.
-	if bCnt != "" {
-		var good bool
-		flds := strings.Split(bCnt, "/")
-		if len(flds) == 1 {
-			iCnt, good = new(big.Int).SetString(bCnt, 10)
-			if !good {
-				return fmt.Errorf("failed converting the count to a big.Int: [%s]", bCnt)
-			}
-		} else if len(flds) == 2 {
-			m := new(big.Int).Set(ikengine.MaximalStates())
-			a, good := new(big.Int).SetString(flds[0], 10)
-			if !good {
-				return fmt.Errorf("failed converting the numerator to a big.Int: [%s]", flds[0])
-			}
-			b, good := new(big.Int).SetString(flds[1], 10)
-			if !good {
-				return fmt.Errorf("failed converting the denominator to a big.Int: [%s]", flds[1])
-			}
-			iCnt = m.Div(m.Mul(m, a), b)
-		} else {
-			return fmt.Errorf("incorrect initial count: [%s]", bCnt)
+		// setup the ikmachine with the secret key.
+		if err := ikmachineRandom(args); err != nil {
+			cobra.CheckErr(err)
 		}
-	} else {
-		// Read the saved counter from the config file.
-		var err error = nil
-		iCnt, err = readCounterFromConfig(counterKey, ikmachine.BigZero)
-		cobra.CheckErr(err)
+	case "crypto":
+		// using crypto/rand as the source of random data.  This is not a pseudo random number
+		// generator, but a true random number generator.  It is slower than the other
+		// sources, but it is more secure.
+		cryptographicRandom()
+	default:
+		cobra.CheckErr(fmt.Errorf("unknown source: %s", source))
 	}
-
-	// Now we can set the index of the cipher machine.
-	ikengine.Index(iCnt)
-	return nil
-}
-
-func setupJC1(key string) error {
-	jc1Key = new(jc1.Cipher).New([]byte(key))
-	random := new(jc1.Rand).New(jc1Key)
-	myRead = random.Read
-	myIntn = random.Intn
-	shutdownEngine = func() {
-		random.StopRand()
-		random = nil
-		jc1Key = nil
-	}
-	return nil
-}
-
-func setupUberJC1(key string) error {
-	uberJC1Key = new(jc1.UberJc1).New([]byte(key))
-	random := new(jc1.Rand).New(uberJC1Key)
-	myRead = random.Read
-	myIntn = random.Intn
-	shutdownEngine = func() {
-		random.StopRand()
-		random = nil
-		uberJC1Key = nil
-	}
-	return nil
 }
 
 /*
@@ -420,7 +312,7 @@ func generateRandomStream() *io.PipeReader {
 		defer output.Close()
 		blocksWritten := new(big.Int).Set(ikmachine.BigZero)
 		for blocksWritten.Cmp(blockCount) < 0 {
-			_, _ = myRead(block)
+			_, _ = rRead(block)
 			_, err := output.Write(block)
 			cobra.CheckErr(err)
 			blocksWritten.Add(blocksWritten, ikmachine.BigOne)
@@ -454,22 +346,23 @@ func checkError(e error) {
 
 func readCounterFromConfig(key string, defValue *big.Int) (*big.Int, error) {
 	var err error = nil
+	var nCnt *big.Int = new(big.Int).Set(defValue)
+	var ok bool
 	mKey = fmt.Sprintf("counters.%s", key)
-	iCnt := new(big.Int).Set(defValue)
 	if grViper.IsSet(mKey) {
 		savedCnt := grViper.GetString(mKey)
-		_, ok := iCnt.SetString(savedCnt, 10)
+		nCnt, ok = nCnt.SetString(savedCnt, 10)
 		if !ok {
-			iCnt = nil
+			nCnt = nil
 			err = fmt.Errorf("failed to convert the saved count to a big.Int: [%s]", savedCnt)
 		} else if bCnt != "" {
 			fmt.Fprintln(os.Stderr, "Ignoring the block count argument - using the value from the saved count.")
 		}
 	} else {
-		grViper.Set(mKey, iCnt.String())
+		grViper.Set(mKey, nCnt.String())
 		err = grViper.WriteConfig()
 	}
-	return iCnt, err
+	return nCnt, err
 }
 
 func writeCounterToConfig(key string, counter *big.Int) error {
