@@ -35,8 +35,9 @@ var (
 
 // pointsCmd represents the points command
 var pointsCmd = &cobra.Command{
-	Use:   "points",
-	Short: "Generate a series of (pseudo-)random X,Y coordinates in a rectangle of a given size",
+	Use: "points",
+	Short: `Generate an image of (pseudo-)random X,Y coordinates in a rectangle of a given
+size`,
 	Run: func(cmd *cobra.Command, args []string) {
 		generatePoints(args)
 	},
@@ -44,14 +45,19 @@ var pointsCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(pointsCmd)
-	pointsCmd.Flags().StringVarP(&pCnt, "points", "n", "", `Count of points to generate.
-The points can be a number or a fraction such as "1/2", "2/3", or "3/4".  If it
-is a fraction, then the number of points generated is calculated by multiplying
-the number of points in the given rectangle by the fraction.`)
-	pointsCmd.Flags().IntVarP(&height, "height", "y", 480, "Height of the rectangle in which to generate points.")
-	pointsCmd.Flags().IntVarP(&width, "width", "x", 640, "Width of the rectangle in which to generate points.")
-	pointsCmd.Flags().StringVarP(&geometry, "geometry", "g", "", `The geometry of the rectangle in which to generate points expressed as WxH
-(eg. 640x480). If geometry is present, it override the height and width options.`)
+	pointsCmd.Flags().StringVarP(&pCnt, "points", "n", "", `Count of X,Y coordinates to generate.  The points can
+be a number or a fraction such as "1/2", "2/3", or 
+"3/4".  If it is a fraction, then the number of 
+points generated is calculated by multiplying the 
+number of points in the given rectangle by the 
+fraction.`)
+	pointsCmd.Flags().IntVarP(&height, "height", "y", 480, `Height of the rectangle in which to generate points.
+`)
+	pointsCmd.Flags().IntVarP(&width, "width", "x", 640, `Width of the rectangle in which to generate points.
+`)
+	pointsCmd.Flags().StringVarP(&geometry, "geometry", "g", "", `The geometry of the rectangle in which to generate 
+points expressed as WxH (eg. 640x480). If geometry is
+present, it override the height and width options.`)
 }
 
 func generatePoints(args []string) {
