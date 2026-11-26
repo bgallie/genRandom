@@ -33,5 +33,18 @@ You can use this command to edit and list the configuration options.`,
 }
 
 func init() {
+	configCmd.SetHelpFunc(func(cmd *cobra.Command, args []string) {
+		var msg string = configCmd.Long
+		if msg == "" {
+			msg = configCmd.Short
+		}
+		fmt.Println(msg)
+		fmt.Println("\nUsage:\n  genRandom config [command] [flags]")
+		fmt.Println("\nAvailable Commands:")
+		fmt.Println("  edit        Edit the configuration file using the default editor.")
+		fmt.Println("  list        List the contents of the configuration file./n")
+		fmt.Println("\nFlags:")
+		fmt.Println("      --config string       config file to use")
+	})
 	rootCmd.AddCommand(configCmd)
 }

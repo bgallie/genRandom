@@ -88,10 +88,10 @@ var tomlString string
 var rootCmd = &cobra.Command{
 	Use:   "genRandom",
 	Short: "Generate (pseudo)random data using various pseudo random number generators",
-	Long: `	Generate (pseudo)random data using various random number generator as either
-	a stream of random bytes, a stream of ASCII '0' and '1' characters,
-	a stream of hexadecimal encoded bytes, or a series of X,Y coordinates 
-	within a rectangle of a given size.`,
+	Long: `Generate (pseudo)random data using various random number generator as either 
+a stream of random bytes, a stream of ASCII '0' and '1' characters, a stream 
+of hexadecimal encoded bytes, or a series of X,Y coordinates within a 
+rectangle of a given size.`,
 	Version: Version,
 }
 
@@ -191,6 +191,10 @@ func checkForConfigIni(confPath string) {
 func initConfig() {
 	var confPath string
 	var err error
+	grViper.SetEnvPrefix("gr")
+	grViper.SetEnvKeyReplacer(strings.NewReplacer("DEFAULT.", ""))
+	// read in environment variables that match
+	grViper.AutomaticEnv()
 	if cfgFile != "" {
 		// Use config file from the flag.
 		grViper.SetConfigFile(cfgFile)
@@ -203,13 +207,9 @@ func initConfig() {
 		grViper.AddConfigPath(confPath)
 		grViper.SetConfigName("config")
 		grViper.SetConfigType("toml")
+		// ensure confPath exists
+		cobra.CheckErr(os.MkdirAll(confPath, 0750))
 	}
-	grViper.SetEnvPrefix("gr")
-	grViper.SetEnvKeyReplacer(strings.NewReplacer("DEFAULT.", ""))
-	// read in environment variables that match
-	grViper.AutomaticEnv()
-	// ensure confPath exists
-	cobra.CheckErr(os.MkdirAll(confPath, 0750))
 	// If a config file is found, read it in.
 	if err := grViper.ReadInConfig(); err != nil {
 		// there was an error reading the config file.  If it did not exist,

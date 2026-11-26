@@ -25,9 +25,10 @@ import (
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "list [flags]",
+	Use:   "list",
 	Short: "List the contents of the OTP Server configuration file.",
-	Long:  "List the contents of the OTP Server configuration file in a human-readable format.",
+	Long: `List the contents of the OTP Server configuration file in a human-readable 
+format.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("\nOTP Server Configuration File: %s\n==================================================================================\n",
 			grViper.ConfigFileUsed())
@@ -41,5 +42,15 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
+	listCmd.SetHelpFunc(func(cmd *cobra.Command, args []string) {
+		var msg string = listCmd.Long
+		if msg == "" {
+			msg = listCmd.Short
+		}
+		fmt.Println(msg)
+		fmt.Println("\nUsage:\n  genRandom config list [flags]")
+		fmt.Println("\nFlags:")
+		fmt.Println("      --config string       config file to use")
+	})
 	configCmd.AddCommand(listCmd)
 }

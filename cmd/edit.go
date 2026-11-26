@@ -37,7 +37,8 @@ var commandArgs []string
 var editCmd = &cobra.Command{
 	Use:   "edit",
 	Short: "Edit the current OTP Server configuration settings.",
-	Long:  "Edit the current OTP Server configuration settings by launching the configured editor in a terminal.",
+	Long: `Edit the current OTP Server configuration settings by launching the configured
+editor in a terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := cmd.Flags().Parse(args)
 		CheckError(err)
@@ -50,17 +51,18 @@ var editCmd = &cobra.Command{
 	},
 }
 
-var infoCmd = &cobra.Command{
-	Use:   "info",
-	Short: "Display the location of the OTP Server configuration file.",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("\nOTP Server configuration file: %s\n\n", grViper.ConfigFileUsed())
-	},
-}
-
 func init() {
+	editCmd.SetHelpFunc(func(cmd *cobra.Command, args []string) {
+		var msg string = editCmd.Long
+		if msg == "" {
+			msg = editCmd.Short
+		}
+		fmt.Println(msg)
+		fmt.Println("\nUsage:\n  genRandom config edit [flags]")
+		fmt.Println("\nFlags:")
+		fmt.Println("      --config string       config file to use")
+	})
 	configCmd.AddCommand(editCmd)
-	configCmd.AddCommand(infoCmd)
 }
 
 // getCommandArgs gets the command and arguments to launch the default editor.

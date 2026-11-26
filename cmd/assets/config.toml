@@ -16,3 +16,6 @@ editor = 'notepad.exe'
 [editor.windows-amd64]
 command = '{{.Editor}}^&^{{.ConfigFile}}'
 editor = 'notepad.exe'
+
+[general]
+enginelayout = 'rrprrprr'
